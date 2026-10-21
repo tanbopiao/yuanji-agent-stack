@@ -17,7 +17,7 @@ Long-running autonomous agents fail in three predictable ways: they **rewrite th
 | Engine | What it does | Analogy |
 |---|---|---|
 | **AxiomKit** ([`axiomkit/`](axiomkit)) | Formally verified invariants (Z3 SMT) + federated semantic memory + guarded recursive self-improvement | CPU microcode + ECC shared cache |
-| **DriftGuard** ([`drift_guard/`](drift_guard)) | Four-layer threshold defense + three-level circuit breaker against intent drift, loops, resource overflow, context entropy | Watchdog timer + breaker panel |
+| **DriftGuard** ([`drift_guard/`](drift_guard)) | Four-layer threshold defense + three-level circuit breaker against intent drift, loops, resource overflow, context entropy + six-dimension governance drift audit (MR-020) | Watchdog timer + breaker panel |
 
 ### Highlights
 
@@ -71,7 +71,7 @@ guard.after_tool(agent_id, tool, args)   # behavior risk + loop detection
 | 引擎 | 机制 | 类比 |
 |---|---|---|
 | **AxiomKit** | Z3 形式化验证不变量 + 联邦语义记忆 + 受护递归自改进 | CPU 微码 + ECC 共享缓存 |
-| **DriftGuard** | 四层阈值防线 + 三级熔断：意图漂移/死循环/资源溢出/上下文熵增 | 看门狗 + 断路器面板 |
+| **DriftGuard** | 四层阈值防线 + 三级熔断：意图漂移/死循环/资源溢出/上下文熵增 + 六维治理漂移审计(MR-020) | 看门狗 + 断路器面板 |
 
 ### 核心特性
 
