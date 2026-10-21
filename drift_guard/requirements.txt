@@ -1,0 +1,8 @@
+# DriftGuard 环境依赖清单
+# 基础必装(核心链路)
+numpy>=1.24
+PyYAML>=6.0
+
+# 语义嵌入(可选,生产推荐;未安装时自动降级 n-gram 嵌入器,防控不中断)
+# FlagEmbedding>=1.2         # BGE-m3 官方推理后端
+# sentence-transformers>=2.2 # 备选后端

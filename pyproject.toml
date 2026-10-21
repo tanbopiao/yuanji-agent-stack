@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "axiomkit"
+version = "0.1.0"
+description = "Give your AI agent unbreakable rules and a memory that never leaks."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [{ name = "ZONGYUAN-ROOT contributors" }]
+keywords = ["ai-safety", "agent", "invariants", "federated-memory", "z3", "rag"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Security",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.optional-dependencies]
+z3 = ["z3-solver>=4.12"]
+http = ["fastapi>=0.110", "uvicorn>=0.29"]
+all = ["z3-solver>=4.12", "fastapi>=0.110", "uvicorn>=0.29"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+axiomkit = "axiomkit.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["axiomkit"]

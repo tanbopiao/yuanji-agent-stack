@@ -1,0 +1,43 @@
+# DriftGuard 阈值配置(可按业务场景自定义调整;留有历史迭代入口)
+version: "1.0"
+updated: "2026-10-21"
+
+anchor:
+  # 目标对齐校验:语义相似度 < 0.75 触发一级预警
+  alignment_threshold: 0.75
+
+semantic:
+  # BGE-m3 嵌入模型(可替换为本地路径或其他嵌入服务)
+  embedding_model: "BAAI/bge-m3"
+  device: "cpu"                # 生产可改 cuda
+  # 语义距离差值 > 0.3 判定为有效意图漂移
+  drift_threshold: 0.3
+  # 单任务最大推理步数上限 20 步,超限触发预警
+  max_reasoning_steps: 20
+
+behavior:
+  loop:
+    # 连续 3 次重复动作序列判定无效循环,触发二级熔断
+    repeat_limit: 3
+  resources:
+    max_tokens: 200000         # 单任务 Token 消耗上限
+    max_api_calls: 500         # 单任务 API 调用次数上限
+    max_runtime_seconds: 3600  # 单任务运行时长上限(秒)
+    warn_ratio: 0.8            # 资源用量达到上限 80% 触发"临近上限"一级熔断
+  context:
+    # 上下文 Token 占用率 >= 90% 强制目标重锚定
+    saturation_threshold: 0.90
+
+coordination:
+  # 父子目标语义相似度 < 0.6 直接拦截子 Agent 输出
+  child_alignment_threshold: 0.6
+
+circuit_breaker:
+  # 连续 2 次一级熔断 → 二级熔断
+  level1_to_level2: 2
+  # 连续 3 次二级熔断 → 三级熔断
+  level2_to_level3: 3
+
+metrics_api:
+  host: "127.0.0.1"
+  port: 9820

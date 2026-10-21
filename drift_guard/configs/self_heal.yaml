@@ -1,0 +1,30 @@
+# DriftGuard 自愈策略配置
+version: "1.0"
+
+self_heal:
+  # 语义漂移: 重锚定校验通过后自动接续任务(无断点丢失)
+  semantic_drift:
+    strategy: "re_anchor"          # 可选: re_anchor | fallback_task | ticket
+    max_attempts: 3                # 自动重锚定尝试次数,超过则转工单
+
+  # 死循环: 打破循环并注入扰动/回退上一定锚点
+  infinite_loop:
+    strategy: "rewind_step"        # 回退到最近一次校验通过的节点
+    max_attempts: 1                # 死循环直接触发二级熔断,不自动重试
+
+  # 上下文溢出: 清理无效上下文,保留核心目标,强制重锚定
+  context_saturation:
+    strategy: "compact_context"    # 压缩上下文 + 目标重锚定
+    keep_recent_steps: 3           # 重锚定后保留最近 N 步推理摘要
+
+  # 资源溢出: 无法自动修复,生成工单告警
+  resource_overflow:
+    strategy: "ticket"
+
+  # 子Agent严重偏离: 自动触发备用任务流程前先人工确认
+  child_misalignment:
+    strategy: "manual_confirm"     # 可选: manual_confirm | fallback_task
+
+ticket:
+  # 无法自愈时生成工单告警的落盘位置(标准 JSON 工单)
+  dir: "storage/tickets"
